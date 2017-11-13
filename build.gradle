@@ -1,0 +1,58 @@
+apply plugin: 'war'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+
+
+/*编译编码UTF-8*/
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src/main/java'
+		}
+		resources {
+			srcDir 'src/main/resources'
+		}
+	}
+	test {
+		java {
+			srcDir 'src/test/java'
+		}
+		resources {
+			srcDir 'src/test/resources'
+		}
+	}
+}
+
+
+repositories {
+    //mavenLocal()
+    maven{ url "http://127.0.0.1:8088/nexus/content/groups/public/" }
+}
+configurations.all { resolutionStrategy.cacheChangingModulesFor 0, 'seconds' }
+
+
+dependencies {
+
+	compile group: 'junit', name: 'junit', version: '4.12'
+    compile "org.apache.poi:poi:3.17"
+    compile "org.apache.poi:poi-ooxml:3.17"
+    compile "org.apache.poi:poi-ooxml-schemas:3.17"
+    compile "org.apache.poi:poi-scratchpad:3.17"
+    compile 'org.apache.commons:commons-pool2:2.4.1'
+    compile 'com.alibaba:fastjson:1.1.37'
+    //compile "com.ailk.mvno.crm.rule:crm-rule-orderrule:1.0.ibss"
+    //compile "com.ailk.mvno.crm.utils:crm-utils:${utilsVersion}"
+}
+
+eclipse {
+    wtp {
+        facet {
+            facet name: 'java', version: '1.8'
+            facet name: 'jst.web', version: '3.0'
+            facet name: 'wst.jsdt.web', version: '1.0'
+        }
+    }
+}
